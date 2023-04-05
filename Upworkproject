@@ -1,0 +1,33 @@
+#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+
+const double PI = 3.14159265358979323846;
+
+int main() {
+int sampleRate = 8000; // sample rate in Hz
+int duration = 5; // duration in seconds
+int amplitude = 5000; // maximum amplitude
+int numSamples = sampleRate * duration; // total number of samples
+double frequency = 440.0; // frequency of the tone in Hz
+double phase = 0.0; // initial phase of the tone
+double increment = 2.0 PI frequency / sampleRate; // phase increment per sample
+
+ofstream outFile(&quot;tone.pcm&quot;, ios::binary);
+
+for (int i = 0; i &lt; numSamples; i++) {
+double sample = amplitude * sin(phase);
+short int sampleInt = (short int) sample;
+outFile.write((char*)&amp;sampleInt, sizeof(sampleInt));
+phase += increment;
+if (phase &gt;= 2.0 * PI) {
+phase -= 2.0 * PI;
+}
+}
+
+outFile.close();
+
+return 0;
+}
